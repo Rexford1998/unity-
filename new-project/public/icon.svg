@@ -1,0 +1,25 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @media (prefers-color-scheme: light) {
+      .background { fill: #1a1625; }
+      .trex { fill: #e8937a; }
+      .eye { fill: #1a1625; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #1a1625; }
+      .trex { fill: #e8937a; }
+      .eye { fill: #1a1625; }
+    }
+  </style>
+  <rect class="background" width="180" height="180" rx="37" />
+  <g transform="translate(30, 25) scale(0.67)">
+    <!-- T-Rex Head -->
+    <path class="trex" d="M40 30 L140 30 L140 60 L160 60 L160 90 L140 90 L140 110 L120 110 L120 130 L100 130 L100 150 L80 150 L80 170 L40 170 L40 150 L60 150 L60 130 L40 130 L40 110 L60 110 L60 90 L40 90 Z"/>
+    <!-- Eye -->
+    <rect class="eye" x="110" y="45" width="15" height="15" rx="2"/>
+    <!-- Teeth -->
+    <path class="background" d="M40 110 L50 95 L60 110 Z M60 110 L70 95 L80 110 Z"/>
+    <!-- Arm -->
+    <path class="trex" d="M70 130 L90 130 L90 145 L80 145 L80 140 L70 140 Z"/>
+  </g>
+</svg>

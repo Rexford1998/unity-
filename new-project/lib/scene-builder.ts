@@ -307,12 +307,13 @@ export function getUniversalBlueprintPrompt(userPrompt: string, style: string, p
   return `You are a 3D modeling expert. Generate a detailed construction blueprint for: "${userPrompt}"
 
 RULES:
-1. Break the object into individual PARTS (minimum 5-15 parts for detail)
-2. Each part uses primitive shapes: box, cylinder, sphere, cone, torus, capsule, octahedron, icosahedron, plane
-3. Use REALISTIC colors from the palette (no placeholder colors)
-4. Specify appropriate materials for each part
-5. Positions are in METERS (real-world scale)
-6. Think about how the object is constructed in real life
+1. DECOMPOSE the object into detailed sub-components (e.g., for a car: chassis, wheels, windshield, lights, seats, steering wheel).
+2. Create 10-30 individual PARTS for high detail.
+3. Each part uses primitive shapes: box, cylinder, sphere, cone, torus, capsule, octahedron, icosahedron, plane.
+4. Use REALISTIC colors from the palette (no placeholder colors).
+5. Specify appropriate materials for each part.
+6. Positions are in METERS (real-world scale).
+7. Think about how the object is constructed in real life - structure, joints, details.
 
 AVAILABLE COLORS:
 - Metals: chrome, silver, steel, iron, gold, bronze, copper, brass, aluminum, titanium
@@ -321,7 +322,7 @@ AVAILABLE COLORS:
 - Organic: skin, leaf, grass, moss, bark, bone, ivory
 - Fabrics: leather, canvas, velvet, silk, denim, cotton, wool
 - Synthetics: plastic_white, plastic_black, plastic_red, rubber, neon_pink, neon_blue
-- Common: white, black, gray, red, green, blue, yellow, orange, purple, pink, brown, tan
+- Common: white, black, gray, red, green, blue, yellow, orange, purple, pink, brown, tan, beige, cream
 
 AVAILABLE MATERIALS (affects shininess):
 - metal, polished_metal, brushed_metal, rusty_metal
@@ -399,20 +400,19 @@ export function getAnimationBlueprintPrompt(userPrompt: string, style: string, p
   return `You are a 3D animator expert. Generate a detailed animated model blueprint for: "${userPrompt}"
 
 RULES:
-1. Create the object with individual PARTS (5-15 parts)
-2. Add KEYFRAME ANIMATIONS to parts that should move
-3. Animation duration should be 1-5 seconds (looping animations)
-4. Use realistic motion - ease in/out, anticipation, follow-through
-5. Positions/rotations change over time via keyframes
+1. DECOMPOSE the object into detailed sub-components (e.g., for a dog: head, neck, torso, upper_leg_FL, lower_leg_FL, paw_FL, tail, ears).
+2. Create 10-25 individual PARTS for high detail.
+3. Add KEYFRAME ANIMATIONS to parts that should move.
+4. Animation duration should be 1-5 seconds (looping animations).
+5. Use realistic motion - ease in/out, anticipation, follow-through.
+6. Positions/rotations change over time via keyframes.
 
 ANIMATION TYPES TO CONSIDER:
-- Walk/Run cycles (legs, arms alternating)
+- Walk/Run cycles (legs moving in correct quadruped/biped rhythm)
 - Idle breathing/bobbing (subtle up/down, scale)
 - Mechanical movement (gears rotating, pistons)
 - Flying (wings flapping, body tilting)
 - Swimming (tail, fins oscillating)
-- Weapon attacks (swing, thrust, recoil)
-- Vehicle movement (wheels spinning, suspension)
 
 KEYFRAME FORMAT:
 - time: seconds (0.0 to duration)
@@ -423,9 +423,9 @@ KEYFRAME FORMAT:
 SHAPES: box, cylinder, sphere, cone, torus, capsule, octahedron, icosahedron, plane
 
 COLORS: chrome, silver, steel, gold, bronze, oak, pine, mahogany, granite, marble,
-        leather, rubber, plastic_white, plastic_red, red, green, blue, white, black, gray
+        leather, rubber, plastic_white, plastic_black, plastic_red, red, green, blue, white, black, gray, brown, tan, beige
 
-MATERIALS: metal, polished_metal, wood, stone, glass, fabric, leather, plastic, rubber, organic
+MATERIALS: metal, polished_metal, wood, stone, glass, fabric, leather, plastic, rubber, organic, skin
 
 Return ONLY valid JSON:
 {
@@ -459,55 +459,70 @@ Return ONLY valid JSON:
   "metadata": {"category": "animated", "style": "${style}", "complexity": "medium"}
 }
 
-EXAMPLE - Flying Bird:
+EXAMPLE - Dog Walking:
 {
-  "name": "FlyingBird",
-  "description": "Bird with flapping wings",
+  "name": "DogWalking",
+  "description": "Dog walking cycle",
   "scale": 1.0,
-  "duration": 1.0,
+  "duration": 1.2,
   "looping": true,
   "parts": [
-    {"name": "Body", "shape": "sphere", "size": [0.15, 16, 16], "position": [0, 0, 0], "color": "gray", "material": "organic"},
-    {"name": "Head", "shape": "sphere", "size": [0.08, 16, 16], "position": [0.15, 0.05, 0], "color": "gray", "material": "organic"},
-    {"name": "Beak", "shape": "cone", "size": [0.02, 0.06, 8], "position": [0.22, 0.05, 0], "rotation": [0, 0, -90], "color": "orange", "material": "plastic"},
-    {"name": "LeftWing", "shape": "box", "size": [0.02, 0.25, 0.12], "position": [0, 0, 0.1], "color": "gray", "material": "organic"},
-    {"name": "RightWing", "shape": "box", "size": [0.02, 0.25, 0.12], "position": [0, 0, -0.1], "color": "gray", "material": "organic"},
-    {"name": "Tail", "shape": "box", "size": [0.08, 0.02, 0.06], "position": [-0.15, 0, 0], "color": "gray", "material": "organic"}
+    {"name": "Torso", "shape": "capsule", "size": [0.25, 0.7, 16], "position": [0, 0.5, 0], "rotation": [90, 0, 0], "color": "brown", "material": "organic"},
+    {"name": "Neck", "shape": "cylinder", "size": [0.15, 0.3, 16], "position": [0, 0.7, 0.4], "rotation": [45, 0, 0], "color": "brown", "material": "organic"},
+    {"name": "Head", "shape": "sphere", "size": [0.2, 16, 16], "position": [0, 0.9, 0.6], "color": "brown", "material": "organic"},
+    {"name": "Leg_FL_Upper", "shape": "capsule", "size": [0.08, 0.35, 8], "position": [-0.2, 0.4, 0.3], "color": "brown", "material": "organic"},
+    {"name": "Leg_FR_Upper", "shape": "capsule", "size": [0.08, 0.35, 8], "position": [0.2, 0.4, 0.3], "color": "brown", "material": "organic"},
+    {"name": "Leg_BL_Upper", "shape": "capsule", "size": [0.08, 0.35, 8], "position": [-0.2, 0.4, -0.3], "color": "brown", "material": "organic"},
+    {"name": "Leg_BR_Upper", "shape": "capsule", "size": [0.08, 0.35, 8], "position": [0.2, 0.4, -0.3], "color": "brown", "material": "organic"},
+    {"name": "Tail", "shape": "cone", "size": [0.08, 0.4, 8], "position": [0, 0.6, -0.4], "rotation": [-45, 0, 0], "color": "brown", "material": "organic"}
   ],
   "animations": [
     {
-      "partName": "LeftWing",
+      "partName": "Leg_FL_Upper",
       "interpolation": "linear",
       "keyframes": [
-        {"time": 0.0, "rotation": [0, 0, 45]},
-        {"time": 0.25, "rotation": [0, 0, -30]},
-        {"time": 0.5, "rotation": [0, 0, 45]},
-        {"time": 0.75, "rotation": [0, 0, -30]},
-        {"time": 1.0, "rotation": [0, 0, 45]}
+        {"time": 0.0, "rotation": [20, 0, 0]},
+        {"time": 0.3, "rotation": [-20, 0, 0]},
+        {"time": 0.6, "rotation": [20, 0, 0]},
+        {"time": 0.9, "rotation": [-20, 0, 0]},
+        {"time": 1.2, "rotation": [20, 0, 0]}
       ]
     },
     {
-      "partName": "RightWing",
+      "partName": "Leg_FR_Upper",
       "interpolation": "linear",
       "keyframes": [
-        {"time": 0.0, "rotation": [0, 0, -45]},
-        {"time": 0.25, "rotation": [0, 0, 30]},
-        {"time": 0.5, "rotation": [0, 0, -45]},
-        {"time": 0.75, "rotation": [0, 0, 30]},
-        {"time": 1.0, "rotation": [0, 0, -45]}
+        {"time": 0.0, "rotation": [-20, 0, 0]},
+        {"time": 0.3, "rotation": [20, 0, 0]},
+        {"time": 0.6, "rotation": [-20, 0, 0]},
+        {"time": 0.9, "rotation": [20, 0, 0]},
+        {"time": 1.2, "rotation": [-20, 0, 0]}
       ]
     },
     {
-      "partName": "Body",
+      "partName": "Leg_BL_Upper",
       "interpolation": "linear",
       "keyframes": [
-        {"time": 0.0, "position": [0, 0, 0]},
-        {"time": 0.5, "position": [0, 0.02, 0]},
-        {"time": 1.0, "position": [0, 0, 0]}
+        {"time": 0.0, "rotation": [-20, 0, 0]},
+        {"time": 0.3, "rotation": [20, 0, 0]},
+        {"time": 0.6, "rotation": [-20, 0, 0]},
+        {"time": 0.9, "rotation": [20, 0, 0]},
+        {"time": 1.2, "rotation": [-20, 0, 0]}
+      ]
+    },
+    {
+      "partName": "Leg_BR_Upper",
+      "interpolation": "linear",
+      "keyframes": [
+        {"time": 0.0, "rotation": [20, 0, 0]},
+        {"time": 0.3, "rotation": [-20, 0, 0]},
+        {"time": 0.6, "rotation": [20, 0, 0]},
+        {"time": 0.9, "rotation": [-20, 0, 0]},
+        {"time": 1.2, "rotation": [20, 0, 0]}
       ]
     }
   ],
-  "metadata": {"category": "creature", "style": "stylized", "complexity": "medium"}
+  "metadata": {"category": "creature", "style": "realistic", "complexity": "medium"}
 }
 
 Now generate animated model for: "${userPrompt}"

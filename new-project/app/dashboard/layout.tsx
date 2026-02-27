@@ -104,7 +104,6 @@ export default function DashboardLayout({
                 {user.credits}/{user.maxCredits}
               </span>
             </div>
-            <Progress value={(user.credits / user.maxCredits) * 100} className="h-2" />
             <p className="text-xs text-sidebar-foreground/50 mt-2">
               Resets in 12 days
             </p>
